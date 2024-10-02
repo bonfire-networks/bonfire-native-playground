@@ -95,11 +95,10 @@
 </.tab_bar>
 
   <.modal id="filters" show={@showFiltersSheet} detentHeight="large" detentSize="medium" detents={[:medium]} visibility={:visible} on_cancel="show_filters">
-     <:header>
-      <Text>Filters</Text>
-    </:header>
+    
     <VStack>
-      <Text>test Sheet</Text>
+      <.header>test</.header>
+      <%!-- <Text>test Sheet</Text> --%>
     </VStack>
  </.modal>
 <%!-- <Element style='sheet(isPresented: attr("showFiltersSheet"), onDismiss: event("dismiss_filters"), content: :content)' isPresented={@showFiltersSheet} phx-change="isPresented-changed">

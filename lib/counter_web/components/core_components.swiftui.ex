@@ -299,16 +299,13 @@ defmodule CounterWeb.CoreComponents.SwiftUI do
     <VStack
       id={@id}
       :if={@show}
-      class="detent:70:large"
+      class="detents:medium:large"
       style={[
         "sheet(isPresented: attr(\"presented\"), content: :content, onDismiss: event(\"dismiss_filters\"))"
       ]}
       presented={@show}
       phx-change={@on_cancel}
     >
-      <VStack template={:toolbar}>
-        <%= render_slot(@header) %>
-      </VStack>
       <VStack template={:content}>
         <%= render_slot(@inner_block) %>
       </VStack>
