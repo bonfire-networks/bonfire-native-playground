@@ -8,14 +8,48 @@ defmodule CounterWeb.Styles.App.SwiftUI do
 
   """
 
+  def class("main_header") do
+    ~RULES"""
+      toolbar(content: :toolbar)
+      navigationTitle(:title)
+      toolbarTitleMenu(content: :content)
+      navigationBarTitleDisplayMode(.inline)
+      toolbarBackgroundVisibility(.visible, for: .navigationBar)
+      toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+    """
+  end
+
+  def class("simple_header") do
+    ~RULES"""
+      toolbar(content: :toolbar)
+      navigationTitle(:title)
+      navigationBarTitleDisplayMode(.inline)
+    """
+  end
+
+
   def class("detents:" <> props) do
     [height, size] = String.split(props, ":")
 
-    {height, _} = Integer.parse(height)
+    # {height, _} = Integer.parse(height)
 
     ~RULES"""
-    presentationDetents(.height({height}), .{size})
+    presentationDetents([.{height}, .{size}])
     """
+ end
+
+ def class("dragindicator:" <> props) do
+
+    ~RULES"""
+    presentationDragIndicator(.{props})
+    """
+ end
+
+
+ def class("ultrathinmaterial") do
+  ~RULES"""
+  presentationBackground(.ultraThinMaterial)
+  """
  end
 
   # If you need to have greater control over how your style rules are created

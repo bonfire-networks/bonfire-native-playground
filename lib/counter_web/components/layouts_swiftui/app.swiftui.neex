@@ -1,2 +1,13 @@
 <.flash_group flash={@flash} />
+<%!-- <ZStack alignment="bottomTrailing"> --%>
 <%= @inner_content %>
+<%!-- <Button phx-click="fab_clicked" style="buttonStyle(.plain); padding(16); padding(.bottom, 48);">
+       <ZStack>
+         <Circle style="fill(Color.accentColor); frame(width: 48, height: 48); shadow(radius: 4);"/>
+         <Label
+           systemImage="plus"
+           style="foregroundStyle(Color.white); font(.body);"
+         />
+       </ZStack>
+     </Button>
+</ZStack> --%>

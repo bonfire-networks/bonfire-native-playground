@@ -1,0 +1,14 @@
+<ScrollView
+style={[
+            "scrollTargetBehavior(.viewAligned)",
+            "scrollIndicators(.hidden)",
+            "safeAreaPadding(.vertical, 0)",
+            "listRowInsets(EdgeInsets())",
+            "listRowSpacing(0)",
+            "listRowBackground(:none)",
+            "padding(.vertical, 0)"
+          ]} >
+<VStack>
+<.activity_notification />
+</VStack>
+</ScrollView>

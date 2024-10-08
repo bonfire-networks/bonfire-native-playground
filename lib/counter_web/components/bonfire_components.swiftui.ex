@@ -7,6 +7,447 @@ defmodule CounterWeb.Components.BonfireComponents.SwiftUI do
   import CounterWeb.CoreComponents.SwiftUI
   # import CounterWeb.UserLive.Components.SwiftUI
 
+  attr :style, :any
+  attr :show_search, :boolean, default: false
+  attr :page_title, :string, default: ""
+  slot :toolbar_trailing
+  slot :navigation_menu
+  slot :header_menu
+
+  def main_header(assigns) do
+    ~LVN"""
+    <VStack
+      style={@style}>
+      <%= if @show_search do %>
+        <ToolbarItem template="toolbar" placement="principal">
+          <Button
+            phx-click="go_to_search"
+            style={[
+            "frame(maxWidth: .infinity)",
+            "controlSize(.small)",
+            "foregroundStyle(.gray)",
+            "buttonStyle(.bordered)"]}>
+            <HStack style="frame(maxWidth: .infinity)">
+            <.icon name="magnifyingglass" />
+            <Text>Search</Text>
+            </HStack>
+          </Button>
+        </ToolbarItem>
+      <% else %>
+        <Text template="title"> <%= @page_title %></Text>
+      <% end %>
+      <ToolbarItemGroup template="toolbar" placement="navigationBarTrailing">
+        <HStack>
+        <%= render_slot(@toolbar_trailing) %>
+        </HStack>
+      </ToolbarItemGroup>
+      <ToolbarItemGroup template="toolbar" placement="navigation">
+          <%= render_slot(@navigation_menu) %>
+      </ToolbarItemGroup>
+      <VStack template="content">
+        <%= render_slot(@header_menu) %>
+      </VStack>
+    </VStack>
+    """
+  end
+
+
+
+  def user_preview(assigns) do
+    ~LVN"""
+      <HStack alignment="top">
+        <!--.image url={"https://images.squarespace-cdn.com/content/v1/5cad42ef90f904e520359371/1560899285008-UBUGYDVWRQT6CX1K9IAY/ursula.jpg"}>
+          <:success style={[
+            "resizable();
+            frame(width: 32, height: 32);
+            clipShape(.circle);
+            aspectRatio(1.777, contentMode: .fill);"]}  />
+        </.image -->
+          <Image name="Uklg" style={[
+            "resizable()",
+            "frame(width: 32, height: 32)",
+            "clipShape(.circle)",
+            "aspectRatio(1, contentMode: .fill)"
+          ]} />
+
+        <VStack alignment="leading" style="padding(.leading, 0); padding(.top, 4);">
+          <Text style="font(.footnote); fontWeight(.bold)">Ursula K. Le Guin</Text>
+          <Text style="font(.footnote); foregroundStyle(.gray)">@ursulakleguin@annares.social</Text>
+          <Text style="font(.footnote);">“Don’t eeeeee your philosophy. Embody it.” (Epictetus)</Text>
+        </VStack>
+          <Spacer/>
+        <.button style="controlSize(.small); buttonStyle(.bordered);">Follow</.button>
+      </HStack>
+
+    """
+  end
+
+
+
+  def activity(%{type: "mention"} = assigns) do
+    ~LVN"""
+    <VStack alignment="leading" style="padding(12); padding(.bottom, 0);">
+        <.activity_subject type="mention"/>
+        <VStack alignment="leading" style="padding(.leading, 52); offset(y: -28); padding(.bottom, -28);">
+          <.activity_object />
+          <.activity_actions />
+        </VStack>
+    </VStack>
+    """
+  end
+
+  def activity(assigns) do
+    ~LVN"""
+    <VStack alignment="leading" style="padding(12); padding(.bottom, 0);">
+        <.activity_subject />
+        <VStack alignment="leading" style="padding(.leading, 52); offset(y: -28); padding(.bottom, -28);">
+          <.activity_object />
+          <.activity_actions />
+        </VStack>
+    </VStack>
+    """
+  end
+
+
+
+  def activity_subject(%{type: "mention"} = assigns) do
+    ~LVN"""
+    <HStack alignment="top">
+    <ZStack alignment="topTrailing">
+
+    <.link navigate={~p"/profile"}>
+      <!--.image
+      style={[
+        "resizable();
+        frame(width: 40, height: 40);
+        clipShape(.circle);
+        aspectRatio(1.777, contentMode: .fill);"]}
+        url={~p"/assets/images/uklg.jpg"}>
+         <:success style={[
+          "resizable();
+          frame(width: 40, height: 40);
+          clipShape(.circle);
+          aspectRatio(1.777, contentMode: .fill);"]}  />
+      </.image -->
+    <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+    </.link>
+    <ZStack alignment="center" style="offset(y: -4, x: 8);">
+        <Circle style="fill(Color.indigo); frame(width: 20, height: 20);" />
+        <.icon
+          name="at"
+          style="
+            font(.caption2);
+            foregroundStyle(.white);
+          "
+        />
+        </ZStack>
+    </ZStack>
+      <HStack style="padding(.leading, 4);">
+        <.link style="foregroundStyle(.black)" navigate={~p"/profile"}>
+          <Text style="font(.callout); fontWeight(.semibold)">Ursula K. Le Guin</Text>
+        </.link>
+        <Spacer/>
+        <HStack>
+          <Text style="font(.footnote); foregroundStyle(.gray)">5 min</Text>
+          <.more />
+        </HStack>
+      </HStack>
+    </HStack>
+    """
+  end
+
+  def activity_subject(assigns) do
+    ~LVN"""
+    <HStack alignment="top">
+    <.link navigate={~p"/profile"}>
+      <!--.image
+      style={[
+        "resizable();
+        frame(width: 40, height: 40);
+        clipShape(.circle);
+        aspectRatio(1.777, contentMode: .fill);"]}
+        url={~p"/assets/images/uklg.jpg"}>
+         <:success style={[
+          "resizable();
+          frame(width: 40, height: 40);
+          clipShape(.circle);
+          aspectRatio(1.777, contentMode: .fill);"]}  />
+      </.image>
+    </.link -->
+      <Image name="Uklg" style={[
+        "resizable()",
+        "frame(width: 40, height: 40)",
+        "clipShape(.circle)",
+        "aspectRatio(1, contentMode: .fill)"
+      ]} />
+      </.link>
+      <HStack style="padding(.leading, 4);">
+        <.link style="foregroundStyle(.black)" navigate={~p"/profile"}>
+          <Text style="font(.callout); fontWeight(.semibold)">Ursula K. Le Guin</Text>
+        </.link>
+        <Spacer/>
+        <HStack>
+          <Text style="font(.footnote); foregroundStyle(.gray)">5 min</Text>
+          <.more />
+        </HStack>
+      </HStack>
+    </HStack>
+    """
+  end
+
+  def activity_object(assigns) do
+    ~LVN"""
+    <VStack style="padding(.top, 4);">
+    <Text style="font(.callout);">Quelli ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar, felis sit amet pulvinar sagittis, quam felis malesuada neque, accumsan rutrum velit quam id arcu.</Text>
+    </VStack>
+    """
+  end
+
+  def activity_media(assigns) do
+    ~LVN"""
+    <VStack>
+      <Text>Media</Text>
+    </VStack>
+    """
+  end
+
+  def activity_actions(assigns) do
+    ~LVN"""
+    <HStack style="padding(.top, 8);">
+      <Button style="buttonStyle(.plain);">
+        <Label systemImage="message" style="foregroundStyle(.gray)" />
+      </Button>
+      <Spacer/>
+      <Button style="buttonStyle(.plain);">
+        <Label style="foregroundStyle(.gray)" systemImage="arrow.trianglehead.2.clockwise.rotate.90" />
+      </Button>
+      <Spacer/>
+      <Button style="buttonStyle(.plain);">
+        <Label style="foregroundStyle(.gray)" systemImage="flame" />
+      </Button>
+      <Spacer/>
+      <Button style="buttonStyle(.plain);">
+        <Label style="foregroundStyle(.gray)" systemImage="bookmark" />
+      </Button>
+      <Spacer/>
+      <.moderation_button />
+    </HStack>
+    """
+  end
+
+  def moderation_button(assigns) do
+    ~LVN"""
+    <Menu style="padding(.leading, 4);">
+      <HStack template={:label}>
+      <.icon name="hand.raised" style="foregroundStyle(.gray)" />
+      </HStack>
+      <Group template={:content}>
+        <Button>
+            <Label systemImage="flag">Flag the activity</Label>
+        </Button>
+        <Button>
+            <Label systemImage="flag">Flag the user</Label>
+        </Button>
+        <Divider/>
+        <Button style="tint(.red);">
+          <Label systemImage="exclamationmark.octagon.fill">Block user</Label>
+        </Button>
+      </Group>
+    </Menu>
+    """
+  end
+
+  def more(assigns) do
+    ~LVN"""
+    <Menu style="padding(.leading, 4);">
+      <HStack template={:label}>
+        <.icon name="ellipsis" style="foregroundStyle(.gray)" />
+      </HStack>
+      <Group template={:content}>
+        <Button>
+            <Label systemImage="globe">Public</Label>
+        </Button>
+        <Button>
+          <Label systemImage="square.on.square">Copy link</Label>
+        </Button>
+        <Button>
+          <Label systemImage="circle.hexagonpath">Add to circle</Label>
+        </Button>
+      </Group>
+    </Menu>
+    """
+  end
+
+
+
+
+
+  def activity_notification(%{type: "like"} = assigns) do
+    ~LVN"""
+    <VStack alignment="leading" style="padding(12); frame(maxWidth: .infinity);">
+      <HStack alignment="top">
+        <ZStack alignment="center">
+          <Circle style="fill(Color.yellow); frame(width: 24, height: 24);" />
+          <.icon
+            name="flame.fill"
+            style="
+              font(.footnote);
+              foregroundStyle(.white);
+            "
+          />
+        </ZStack>
+        <VStack alignment="leading" style="padding(.leading, 4);">
+          <HStack alignment="leading">
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+          </HStack>
+          <HStack>
+          <Text style="font(.subheadline);"><Text style="fontWeight(.semibold);">Ursula K. Le Guin</Text>, and 4 more users, liked your activity</Text>
+          </HStack>
+          <Text style="font(.subheadline); padding(.top, 2); foregroundStyle(.gray)">Quelli ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar, felis sit amet pulvinar sagittis, quam felis malesuada neque, accumsan rutrum velit quam id arcu.</Text>
+        </VStack>
+        <Spacer/>
+      </HStack>
+    </VStack>
+    """
+  end
+
+
+  def activity_notification(%{type: "boost"} = assigns) do
+    ~LVN"""
+    <VStack alignment="leading" style="padding(12); frame(maxWidth: .infinity);">
+
+      <HStack alignment="top">
+        <ZStack alignment="center">
+          <Circle style="fill(Color.green); frame(width: 24, height: 24);" />
+          <.icon
+            name="arrow.trianglehead.2.clockwise.rotate.90"
+            style="
+              font(.footnote);
+              foregroundStyle(.white);
+            "
+          />
+        </ZStack>
+        <VStack alignment="leading" style="padding(.leading, 4);">
+          <HStack alignment="leading">
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+          </HStack>
+          <HStack>
+          <Text style="font(.subheadline);"><Text style="fontWeight(.semibold);">Ursula K. Le Guin</Text>, and 4 more users, boosted your activity</Text>
+          </HStack>
+          <Text style="font(.subheadline); padding(.top, 2); foregroundStyle(.gray)">Quelli ipsum dolor sit amet, consectetur adipiscing elit. Donec pulvinar, felis sit amet pulvinar sagittis, quam felis malesuada neque, accumsan rutrum velit quam id arcu.</Text>
+        </VStack>
+        <Spacer/>
+      </HStack>
+    </VStack>
+    """
+  end
+
+  def activity_notification(assigns) do
+    ~LVN"""
+    <VStack alignment="leading" style="padding(12); frame(maxWidth: .infinity);">
+      <HStack alignment="top">
+        <ZStack alignment="center">
+        <Circle style="fill(Color.blue); frame(width: 24, height: 24);" />
+        <.icon
+          name="person.fill.badge.plus"
+          style="
+            font(.footnote);
+            foregroundStyle(.white);
+          "
+        />
+        </ZStack>
+        <VStack alignment="leading" style="padding(.leading, 4);">
+          <HStack alignment="leading">
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+             <Image name="Uklg" style={[
+      "resizable()",
+      "frame(width: 40, height: 40)",
+      "clipShape(.circle)",
+      "aspectRatio(1, contentMode: .fill)"
+    ]} />
+          </HStack>
+          <HStack>
+          <Text style="font(.subheadline);"><Text style="fontWeight(.semibold);">Ursula K. Le Guin</Text>, and 4 more users, followed you</Text>
+        </HStack>
+        <Text style="font(.subheadline); padding(.top, 2); foregroundStyle(.gray)">lara_sel@bonfire.cafe</Text>
+        </VStack>
+        <Spacer/>
+      </HStack>
+    </VStack>
+    """
+  end
+
+
+
+
   attr :rest, :global, include: ~w(phx-change selection)
   slot :inner_block, required: true
 

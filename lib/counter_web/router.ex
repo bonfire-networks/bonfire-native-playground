@@ -23,6 +23,9 @@ defmodule CounterWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive
+    live "/profile", ProfileLive
+    live "/search", SearchLive
+
   end
 
   # Other scopes may use custom stacks.

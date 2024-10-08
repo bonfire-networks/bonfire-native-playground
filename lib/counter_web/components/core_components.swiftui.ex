@@ -244,29 +244,29 @@ defmodule CounterWeb.CoreComponents.SwiftUI do
   """
   @doc type: :component
 
-  slot :actions
-  slot :navigation_menu
+  slot :inner_block, required: true
+  slot :subtitle
+
+
   attr :placement, :string, default: "automatic"
 
   def header(assigns) do
     ~LVN"""
     <VStack style={[
       "navigationTitle(:title)",
-      "toolbar(content: :toolbar)"
+      "navigationSubtitle(:subtitle)",
+      "toolbar(content: :toolbar)",
+      "navigationBarTitleDisplayMode(.inline)"
     ]}>
-      <ToolbarItemGroup
-        :for={action <- @actions}
-        template="toolbar"
-        placement={Map.get(action, :placement, "automatic")}
-      >
-        <%= render_slot(action) %>
+      <Text template="title">
+        <%= render_slot(@inner_block) %>
+      </Text>
+      <Text :if={@subtitle != []} template="subtitle">
+        <%= render_slot(@subtitle) %>
+      </Text>
+      <ToolbarItemGroup template="toolbar">
+        <%= render_slot(@actions) %>
       </ToolbarItemGroup>
-
-      <ToolbarItem placement="principal" template="toolbar">
-      <%= render_slot(@navigation_menu) %>
-      </ToolbarItem>
-
-      <ToolbarItemGroup template="toolbar" :if={Enum.empty?(@actions)} />
     </VStack>
     """
   end
@@ -292,23 +292,19 @@ defmodule CounterWeb.CoreComponents.SwiftUI do
   attr :show, :boolean, default: false
   attr :on_cancel, :string, default: nil
   slot :inner_block, required: true
-  slot :header, required: true
 
   def modal(assigns) do
     ~LVN"""
     <VStack
       id={@id}
       :if={@show}
-      class="detents:medium:large"
       style={[
         "sheet(isPresented: attr(\"presented\"), content: :content, onDismiss: event(\"dismiss_filters\"))"
       ]}
       presented={@show}
       phx-change={@on_cancel}
     >
-      <VStack template={:content}>
         <%= render_slot(@inner_block) %>
-      </VStack>
     </VStack>
     """
   end
@@ -563,7 +559,7 @@ defmodule CounterWeb.CoreComponents.SwiftUI do
   slot :empty, doc: """
     The empty state that will render before has successfully been downloaded.
 
-        <.image url={~p"/assets/images/logo.png"}>
+        <.image url={~p"/assets/images/uklg.jpg"}>
           <:empty>
             <Image systemName="myloading.spinner" />
           </:empty>
@@ -574,7 +570,7 @@ defmodule CounterWeb.CoreComponents.SwiftUI do
   slot :success, doc: """
     The success state that will render when the image has successfully been downloaded.
 
-        <.image url={~p"/assets/images/logo.png"}>
+        <.image url={~p"/assets/images/uklg.jpg"}>
           <:success class="main-logo"/>
         </.image>
 
@@ -587,7 +583,7 @@ defmodule CounterWeb.CoreComponents.SwiftUI do
   slot :failure, doc: """
     The failure state that will render when the image fails to downloaded.
 
-        <.image url={~p"/assets/images/logo.png"}>
+        <.image url={~p"/assets/images/uklg.jpg"}>
           <:failure class="image-fail"/>
         </.image>
 

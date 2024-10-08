@@ -51,7 +51,7 @@ config :counter, CounterWeb.Endpoint,
       ~r"lib/counter_web/(controllers|live|components)/.*(ex|heex)$",
       ~r"lib/counter_web/(live|components)/.*neex$",
       ~r"lib/counter_web/styles/.*ex$",
-      ~r"priv/static/*.styles$"
+      ~r"priv/static/.*styles$"
     ]
   ]
 
