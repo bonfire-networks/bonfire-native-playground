@@ -2,8 +2,8 @@
 
   <.main_header
     page_title={@page_title}
-    show_search={@show_search}
-    style={if @show_header_menu, do: "main_header", else: "simple_header"}
+    show_search={@selected_tab=="search"}
+    style={if @selected_tab in ["home", "notifications"], do: "main_header", else: "simple_header"}
     >
     <:toolbar_trailing>
       <%= case @toolbar_trailing do %>
@@ -44,7 +44,7 @@
   
 
   
-<.tab_bar phx-change="swiftui_tab_selection" selection={@swiftui_tab}>
+<.tab_bar phx-change="select_tab" selection={@selected_tab}>
   <.tab tag={:home} name="" icon_system_name="square.stack">
 
      <VStack alignment="top" style="padding(.top, 0);">
@@ -186,7 +186,7 @@
   </.tab>
 </.tab_bar>
 
-  <.modal id="filters" show={@showFiltersSheet} on_cancel="dismiss_filters">
+  <.modal id="filters" show={@show_search_filters} on_cancel="dismiss_filters">
     <VStack class="detents:medium:large ultrathinmaterial dragindicator:visible" template={:content}>
     <HStack style="padding(.leading, 24); padding(.trailing, 24); padding(.top, 24); padding(.bottom, 0);">
       <Spacer/>
@@ -263,7 +263,7 @@
     </.button>
   </VStack>
 </VStack>
-  <.tab_bar phx-change="swiftui_tab_selection" selection={@swiftui_tab}>
+  <.tab_bar phx-change="select_tab" selection={@selected_tab}>
     <.tab tag={:home} name="" icon_system_name="square.stack">
       <Text>Home</Text>
     </.tab>

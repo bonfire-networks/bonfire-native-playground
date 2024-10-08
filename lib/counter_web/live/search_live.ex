@@ -10,14 +10,17 @@ defmodule CounterWeb.SearchLive do
     |> assign(
       searchText: "",
       isSearchPresented: true,
-      showFiltersSheet: false
+      show_search_filters: false
      )
    }
   end
 
-  def handle_event("search", %{"searchText" => search_text}, socket) do
+  def handle_event(_, %{"searchText" => search_text}, socket) do
     # Implement your search logic here
-    {:noreply, assign(socket, searchText: search_text)}
+    {:noreply, assign(socket, 
+      searchText: search_text
+      # isSearchPresented: true
+      )}
   end
 
   def handle_event("search-changed", params, socket) do

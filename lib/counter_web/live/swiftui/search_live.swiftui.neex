@@ -12,17 +12,17 @@
             text: attr("searchText"), 
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Search for something...")],
-        ~s[backgroundColor(.clear)],
-        ~s[padding(.leading, 16)],
-        "scrollTargetBehavior(.viewAligned)",
-        "scrollIndicators(.hidden)",
-        "safeAreaPadding(.vertical, 0)",
-        "listRowInsets(EdgeInsets())",
-        "listRowSpacing(0)",
-        "listRowBackground(:none)",
-        "padding(.vertical, 0)",
-        ~s[padding(.trailing, 16)],        
-        ~s[onSubmit(of: .search, action: event("search"))]
+          ~s[backgroundColor(.clear)],
+          ~s[padding(.leading, 16)],
+          "scrollTargetBehavior(.viewAligned)",
+          "scrollIndicators(.hidden)",
+          "safeAreaPadding(.vertical, 0)",
+          "listRowInsets(EdgeInsets())",
+          "listRowSpacing(0)",
+          "listRowBackground(:none)",
+          "padding(.vertical, 0)",
+          ~s[padding(.trailing, 16)],        
+          ~s[onSubmit(of: .search, action: event("search"))]
           ]}
           isSearchPresented={@isSearchPresented}
           searchText={@searchText}

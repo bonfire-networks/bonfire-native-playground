@@ -8,8 +8,8 @@ defmodule CounterWeb.ProfileLive do
     socket
     |> assign(
       counter: 0,
-      showFiltersSheet: false,
-      swiftui_tab: :home
+      show_search_filters: false,
+      selected_tab: :home
      )
    }
   end
@@ -23,11 +23,11 @@ defmodule CounterWeb.ProfileLive do
   end
 
   def handle_event("show_filters", _params, socket) do
-    {:noreply, assign(socket, showFiltersSheet: true)}
+    {:noreply, assign(socket, show_search_filters: true)}
   end
 
   def handle_event("dismiss_filters", _params, socket) do
-    {:noreply, assign(socket, showFiltersSheet: false)}
+    {:noreply, assign(socket, show_search_filters: false)}
   end
 
   @impl true

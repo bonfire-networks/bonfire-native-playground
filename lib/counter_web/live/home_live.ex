@@ -7,15 +7,13 @@ defmodule CounterWeb.HomeLive do
     {:ok, socket
     |> assign(
       counter: 0,
-      swiftui_tab: "home",
       searchText: "",
-      toolbar_trailing: :home_toolbar_trailing,
-      navigation_menu: :home_navigation_menu,
-      header_menu: :home_header_menu,
-      page_title: "Home",
       show_search: false,
       show_header_menu: true,
-      showFiltersSheet: false)}
+      show_search_filters: false)
+      |> assign(tab_assigns("home"))
+    }
+
   end
 
 
@@ -33,11 +31,11 @@ defmodule CounterWeb.HomeLive do
   end
 
   def handle_event("show_filters", _params, socket) do
-    {:noreply, assign(socket, showFiltersSheet: true)}
+    {:noreply, assign(socket, show_search_filters: true)}
   end
 
   def handle_event("dismiss_filters", _params, socket) do
-    {:noreply, assign(socket, showFiltersSheet: false)}
+    {:noreply, assign(socket, show_search_filters: false)}
   end
 
   @impl true
@@ -45,7 +43,20 @@ defmodule CounterWeb.HomeLive do
     {:noreply, assign(socket, :counter, socket.assigns.counter + 1)}
   end
 
-  def handle_event("swiftui_tab_selection", %{"selection" => tab}, socket) do
+  def handle_event("select_tab", %{"selection" => tab}, socket) do
+
+    show_header_menu = tab in ["home", "notifications"]
+    {:noreply, socket
+    |> assign(
+      searchText: "",
+      show_header_menu: show_header_menu,
+      show_search: tab == "search",
+    )
+    |> assign(tab_assigns(tab))
+    }
+  end
+
+  def tab_assigns(tab) do
     {header_menu, toolbar_trailing, navigation_menu, page_title} =
       case tab do
         "home" ->
@@ -67,18 +78,13 @@ defmodule CounterWeb.HomeLive do
           {nil, nil, nil, ""}
       end
 
-    show_header_menu = tab in ["home", "notifications"]
-    {:noreply, socket
-    |> assign(
-      swiftui_tab: tab,
-      searchText: "",
+    [
+      selected_tab: tab,
       header_menu: header_menu,
-      show_header_menu: show_header_menu,
       navigation_menu: navigation_menu,
-      show_search: tab == "search",
       page_title: page_title,
       toolbar_trailing: toolbar_trailing
-    )}
+    ]
   end
 
 
